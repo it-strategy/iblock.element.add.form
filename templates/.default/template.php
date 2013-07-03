@@ -15,6 +15,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 <?if (strlen($arResult["MESSAGE"]) > 0):?>
 	<?=ShowNote($arResult["MESSAGE"])?>
 <?endif?>
+<?if ($arResult['SHOW_FORM']) {?>
 <form name="iblock_add" action="<?=POST_FORM_ACTION_URI?>" method="post" enctype="multipart/form-data">
 
 	<?=bitrix_sessid_post()?>
@@ -334,3 +335,4 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 	<br />
 	<?if (strlen($arParams["LIST_URL"]) > 0):?><a href="<?=$arParams["LIST_URL"]?>"><?=GetMessage("IBLOCK_FORM_BACK")?></a><?endif?>
 </form>
+<?}?>

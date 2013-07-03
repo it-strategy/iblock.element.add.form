@@ -85,6 +85,7 @@ if (CModule::IncludeModule("iblock"))
 	}
 
 	$arResult["ERRORS"] = array();
+	$arResult['SHOW_FORM'] = true;
 
 	if ($bAllowAccess)
 	{
@@ -835,6 +836,9 @@ if (CModule::IncludeModule("iblock"))
 			// redirect to element edit form or to elements list
 			if (count($arResult["ERRORS"]) == 0)
 			{
+				$sRedirectUrl = '';
+				$sAction = $sAction == "ADD" ? "ADD" : "EDIT";
+
 				if (!empty($_REQUEST["iblock_submit"]))
 				{
 					if (strlen($arParams["LIST_URL"]) > 0)
@@ -843,38 +847,27 @@ if (CModule::IncludeModule("iblock"))
 					}
 					else
 					{
-						if (strlen($SEF_URL) > 0)
-						{
-							$SEF_URL = str_replace("edit=Y", "", $SEF_URL);
-							$SEF_URL = str_replace("?&", "?", $SEF_URL);
-							$SEF_URL = str_replace("&&", "&", $SEF_URL);
-							$sRedirectUrl = $SEF_URL;
-						}
-						else
-						{
-							$sRedirectUrl = $APPLICATION->GetCurPageParam("", array("edit", "CODE"), $get_index_page=false);
-						}
-
+						$arResult['SHOW_FORM'] = false;
 					}
 				}
-				else
+				elseif (!empty($_REQUEST["iblock_apply"]))
 				{
-					if (strlen($SEF_URL) > 0)
-						$sRedirectUrl = $SEF_URL;
-					else
-						$sRedirectUrl = $APPLICATION->GetCurPageParam("edit=Y&CODE=".$arParams["ID"], array("edit", "CODE"), $get_index_page=false);
+					$arResult['SHOW_FORM'] = true;
 				}
 
-				$sAction = $sAction == "ADD" ? "ADD" : "EDIT";
-				$sRedirectUrl .= (strpos($sRedirectUrl, "?") === false ? "?" : "&")."strIMessage=";
-				$sRedirectUrl .= urlencode($arParams["USER_MESSAGE_".$sAction]);
+				if (strlen($sRedirectUrl) > 0) {
+					$sRedirectUrl .= (strpos($sRedirectUrl, "?") === false ? "?" : "&")."strIMessage=";
+					$sRedirectUrl .= urlencode($arParams["USER_MESSAGE_".$sAction]);
 
-				//echo $sRedirectUrl;
-				LocalRedirect($sRedirectUrl);
-				exit();
+					LocalRedirect($sRedirectUrl);
+					exit();
+				}
+
+				$arResult['MESSAGE'] = $arParams["USER_MESSAGE_".$sAction];
 			}
 		}
 
+	if ($arResult['SHOW_FORM']) {
 		//prepare data for form
 
 		$arResult["PROPERTY_REQUIRED"] = is_array($arParams["PROPERTY_CODES_REQUIRED"]) ? $arParams["PROPERTY_CODES_REQUIRED"] : array();
@@ -1081,8 +1074,9 @@ if (CModule::IncludeModule("iblock"))
 
 			$arResult["MESSAGE"] = htmlspecialcharsex($_REQUEST["strIMessage"]);
 
-			$this->IncludeComponentTemplate();
 		}
+	}
+			$this->IncludeComponentTemplate();
 	}
 	if (!$bAllowAccess && !$bHideAuth)
 	{

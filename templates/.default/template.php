@@ -7,8 +7,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 //exit();
 ?>
 
-<?if (count($arResult["ERRORS"])):?>
-	<?=ShowError(implode("<br />", $arResult["ERRORS"]))?>
+<?if (count($arResult["ERRORS"])):?><?
+	foreach ($arResult["ERRORS"] as $propertyID => $arErrors) {?>
+		<p><?=ShowError(implode('<br />', $arErrors));?></p><?
+	}?>
 <?endif?>
 <?if (strlen($arResult["MESSAGE"]) > 0):?>
 	<?=ShowNote($arResult["MESSAGE"])?>

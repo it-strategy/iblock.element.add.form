@@ -362,8 +362,12 @@ if (CModule::IncludeModule("iblock"))
 							$arFile["del"] = $_REQUEST["DELETE_FILE"][$propertyID][$key] == "Y" ? "Y" : "";
 							$arUpdatePropertyValues[$propertyID][$key] = $arFile;
 
-							if(($arParams["MAX_FILE_SIZE"] > 0) && ($arFile["size"] > $arParams["MAX_FILE_SIZE"]))
-								$arResult["ERRORS"][] = GetMessage("IBLOCK_ERROR_FILE_TOO_LARGE");
+							if(($arParams["MAX_FILE_SIZE"] > 0) && ($arFile["size"] > $arParams["MAX_FILE_SIZE"])) {
+								if (!isset($arResult["ERRORS"][$propertyID])) {
+									$arResult["ERRORS"][$propertyID] = array();
+								}
+								$arResult["ERRORS"][$propertyID][] = GetMessage("IBLOCK_ERROR_FILE_TOO_LARGE");
+							}
 						}
 
 						if (count($arUpdatePropertyValues[$propertyID]) == 0)
@@ -392,17 +396,21 @@ if (CModule::IncludeModule("iblock"))
 									false,
 									array("ID")
 								);
-								if ($rsChildren->SelectedRowsCount() > 0)
-								{
-									$arResult["ERRORS"][] = GetMessage("IBLOCK_ADD_LEVEL_LAST_ERROR");
+								if ($rsChildren->SelectedRowsCount() > 0) {
+									if (!isset($arResult["ERRORS"][$propertyID])) {
+										$arResult["ERRORS"][$propertyID] = array();
+									}
+									$arResult["ERRORS"][$propertyID][] = GetMessage("IBLOCK_ADD_LEVEL_LAST_ERROR");
 									break;
 								}
 							}
 						}
 
-						if ($arParams["MAX_LEVELS"] > 0 && count($arUpdateValues[$propertyID]) > $arParams["MAX_LEVELS"])
-						{
-							$arResult["ERRORS"][] = str_replace("#MAX_LEVELS#", $arParams["MAX_LEVELS"], GetMessage("IBLOCK_ADD_MAX_LEVELS_EXCEEDED"));
+						if ($arParams["MAX_LEVELS"] > 0 && count($arUpdateValues[$propertyID]) > $arParams["MAX_LEVELS"]) {
+							if (!isset($arResult["ERRORS"][$propertyID])) {
+								$arResult["ERRORS"][$propertyID] = array();
+							}
+							$arResult["ERRORS"][$propertyID][] = str_replace("#MAX_LEVELS#", $arParams["MAX_LEVELS"], GetMessage("IBLOCK_ADD_MAX_LEVELS_EXCEEDED"));
 						}
 					}
 					else
@@ -412,8 +420,12 @@ if (CModule::IncludeModule("iblock"))
 							$arFile = $_FILES["PROPERTY_FILE_".$propertyID."_0"];
 							$arFile["del"] = $_REQUEST["DELETE_FILE"][$propertyID][0] == "Y" ? "Y" : "";
 							$arUpdateValues[$propertyID] = $arFile;
-							if ($arParams["MAX_FILE_SIZE"] > 0 && $arFile["size"] > $arParams["MAX_FILE_SIZE"])
-								$arResult["ERRORS"][] = GetMessage("IBLOCK_ERROR_FILE_TOO_LARGE");
+							if ($arParams["MAX_FILE_SIZE"] > 0 && $arFile["size"] > $arParams["MAX_FILE_SIZE"]) {
+								if (!isset($arResult["ERRORS"][$propertyID])) {
+									$arResult["ERRORS"][$propertyID] = array();
+								}
+								$arResult["ERRORS"][$propertyID][] = GetMessage("IBLOCK_ERROR_FILE_TOO_LARGE");
+							}
 						}
 						elseif($arResult["PROPERTY_LIST_FULL"][$propertyID]["PROPERTY_TYPE"] == "HTML")
 						{
@@ -576,18 +588,23 @@ if (CModule::IncludeModule("iblock"))
 						$bError = true;
 				}
 
-				if ($bError)
-				{
-					$arResult["ERRORS"][] = str_replace("#PROPERTY_NAME#", intval($propertyID) > 0 ? $arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"] : (!empty($arParams["CUSTOM_TITLE_".$propertyID]) ? $arParams["CUSTOM_TITLE_".$propertyID] : GetMessage("IBLOCK_FIELD_".$propertyID)), GetMessage("IBLOCK_ADD_ERROR_REQUIRED"));
+				if ($bError) {
+					if (!isset($arResult["ERRORS"][$propertyID])) {
+						$arResult["ERRORS"][$propertyID] = array();
+					}
+					$arResult["ERRORS"][$propertyID][] = str_replace("#PROPERTY_NAME#", intval($propertyID) > 0 ? $arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"] : (!empty($arParams["CUSTOM_TITLE_".$propertyID]) ? $arParams["CUSTOM_TITLE_".$propertyID] : GetMessage("IBLOCK_FIELD_".$propertyID)), GetMessage("IBLOCK_ADD_ERROR_REQUIRED"));
 				}
 			}
 
 			// check captcha
 			if ($arParams["USE_CAPTCHA"] == "Y" && $arParams["ID"] <= 0)
 			{
-				if (!$APPLICATION->CaptchaCheckCode($_REQUEST["captcha_word"], $_REQUEST["captcha_sid"]))
-				{
-					$arResult["ERRORS"][] = GetMessage("IBLOCK_FORM_WRONG_CAPTCHA");
+				if (!$APPLICATION->CaptchaCheckCode($_REQUEST["captcha_word"], $_REQUEST["captcha_sid"])) {
+					$propertyID = 'captcha_word';
+					if (!isset($arResult["ERRORS"][$propertyID])) {
+						$arResult["ERRORS"][$propertyID] = array();
+					}
+					$arResult["ERRORS"][$propertyID][] = GetMessage("IBLOCK_FORM_WRONG_CAPTCHA");
 				}
 			}
 
@@ -627,8 +644,13 @@ if (CModule::IncludeModule("iblock"))
 					);
 				}
 
-				if(!$canWrite)
-					$arResult["ERRORS"][] = GetMessage("CC_BIEAF_ACCESS_DENIED_STATUS");
+				if(!$canWrite) {
+					$propertyID = 'OTHER';
+					if (!isset($arResult["ERRORS"][$propertyID])) {
+						$arResult["ERRORS"][$propertyID] = array();
+					}
+					$arResult["ERRORS"][$propertyID][] = GetMessage("CC_BIEAF_ACCESS_DENIED_STATUS");
+				}
 			}
 
 			if($bBizproc && count($arResult["ERRORS"]) == 0)
@@ -647,8 +669,13 @@ if (CModule::IncludeModule("iblock"))
 							$arErrorsTmp
 						);
 
-						foreach($arErrorsTmp as $e)
-							$arResult["ERRORS"][] = $e["message"];
+						foreach($arErrorsTmp as $e) {
+							$propertyID = 'OTHER';
+							if (!isset($arResult["ERRORS"][$propertyID])) {
+								$arResult["ERRORS"][$propertyID] = array();
+							}
+							$arResult["ERRORS"][$propertyID][] = $e["message"];
+						}
 					}
 				}
 			}
@@ -735,9 +762,12 @@ if (CModule::IncludeModule("iblock"))
 						}
 					}
 
-					if (!$res = $oElement->Update($arParams["ID"], $arUpdateValues, $bWorkflowIncluded, true, $arParams["RESIZE_IMAGES"]))
-					{
-						$arResult["ERRORS"][] = $oElement->LAST_ERROR;
+					if (!$res = $oElement->Update($arParams["ID"], $arUpdateValues, $bWorkflowIncluded, true, $arParams["RESIZE_IMAGES"])) {
+						$propertyID = 'OTHER';
+						if (!isset($arResult["ERRORS"][$propertyID])) {
+							$arResult["ERRORS"][$propertyID] = array();
+						}
+						$arResult["ERRORS"][$propertyID][] = $oElement->LAST_ERROR;
 					}
 				}
 				// add new element
@@ -752,9 +782,12 @@ if (CModule::IncludeModule("iblock"))
 					}
 
 					$sAction = "ADD";
-					if (!$arParams["ID"] = $oElement->Add($arUpdateValues, $bWorkflowIncluded, true, $arParams["RESIZE_IMAGES"]))
-					{
-						$arResult["ERRORS"][] = $oElement->LAST_ERROR;
+					if (!$arParams["ID"] = $oElement->Add($arUpdateValues, $bWorkflowIncluded, true, $arParams["RESIZE_IMAGES"])){
+						$propertyID = 'OTHER';
+						if (!isset($arResult["ERRORS"][$propertyID])) {
+							$arResult["ERRORS"][$propertyID] = array();
+						}
+						$arResult["ERRORS"][$propertyID][] = $oElement->LAST_ERROR;
 					}
 
 					if (!empty($_REQUEST["iblock_apply"]) && strlen($SEF_URL) > 0)
@@ -782,8 +815,13 @@ if (CModule::IncludeModule("iblock"))
 							$arErrorsTmp
 						);
 
-						foreach($arErrorsTmp as $e)
-							$arResult["ERRORS"][] = $e["message"];
+						foreach($arErrorsTmp as $e) {
+							$propertyID = 'OTHER';
+							if (!isset($arResult["ERRORS"][$propertyID])) {
+								$arResult["ERRORS"][$propertyID] = array();
+							}
+							$arResult["ERRORS"][$propertyID][] = $e["message"];
+						}
 					}
 				}
 			}

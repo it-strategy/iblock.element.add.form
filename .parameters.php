@@ -299,4 +299,11 @@ foreach ($arCurrentValues['PROPERTY_CODES'] as $property) {
     }
 }
 
+$arComponentParameters['PROPERTY_HIDDEN'] = array(
+    'PARENT' => 'FIELDS',
+    'NAME' => GetMessage('IBLOCK_PROPERTY_HIDDEN'),
+    'TYPE' => 'LIST',
+    'MULTIPLE' => 'Y',
+    'VALUES' => $arProperty_LNSF,
+);
 ?>

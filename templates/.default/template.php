@@ -30,7 +30,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 		</thead>
 		<?if (is_array($arResult["PROPERTY_LIST"]) && !empty($arResult["PROPERTY_LIST"])):?>
 		<tbody>
-			<?foreach ($arResult["PROPERTY_LIST"] as $propertyID):?>
+			<?foreach ($arResult["PROPERTY_LIST"] as $propertyID):
+				$isHidden = true;
+				if (!is_array($arParams['PROPERTY_HIDDEN']) || !in_array($propertyID, $arParams['PROPERTY_HIDDEN'])) {
+					$isHidden = false;?>
 				<tr>
 					<td><?
                         if (!empty($arParams["CUSTOM_TITLE_".$propertyID])) {
@@ -104,6 +107,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 										$value = "";
 										$description = "";
 									}
+									if ($isHidden) {?>
+										<input type="hidden" name="PROPERTY[<?=$propertyID?>][<?=$i?>][VALUE]" value="<?=$value?>" />
+										<input type="hidden" name="PROPERTY[<?=$propertyID?>][<?=$i?>][DESCRIPTION]" value="<?=$description?>" /><?
+									} else {
 									echo call_user_func_array($arResult["PROPERTY_LIST_FULL"][$propertyID]["GetPublicEditHTML"],
 										array(
 											$arResult["PROPERTY_LIST_FULL"][$propertyID],
@@ -117,6 +124,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 												"FORM_NAME"=>"iblock_add",
 											),
 										));
+									}
 								?><br /><?
 								}
 							break;
@@ -169,9 +177,13 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 									{
 										$value = "";
 									}
+									if ($isHidden) {?>
+										<input type="hidden" name="PROPERTY[<?=$propertyID?>][<?=$i?>]" value="<?=$value?>" /><?
+									} else {
 								?>
 						<textarea cols="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["COL_COUNT"]?>" rows="<?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["ROW_COUNT"]?>" name="PROPERTY[<?=$propertyID?>][<?=$i?>]"><?=$value?></textarea>
 								<?
+									}
 								}
 							break;
 
@@ -192,6 +204,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 									{
 										$value = "";
 									}
+									if ($isHidden) {?>
+										<input type="hidden" name="PROPERTY[<?=$propertyID?>][<?=$i?>]" value="<?=$value?>" /><?
+									} else {
 								?>
 								<input type="text" name="PROPERTY[<?=$propertyID?>][<?=$i?>]" size="25" value="<?=$value?>" /><br /><?
 								if($arResult["PROPERTY_LIST_FULL"][$propertyID]["USER_TYPE"] == "DateTime"):?><?
@@ -209,6 +224,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 									?><br /><small><?=GetMessage("IBLOCK_FORM_DATE_FORMAT")?><?=FORMAT_DATETIME?></small><?
 								endif
 								?><br /><?
+									}
 								}
 							break;
 

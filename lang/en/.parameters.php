@@ -46,4 +46,5 @@ $MESS["CP_BIEAF_RESIZE_IMAGES"] = "Use Information Block Settings For Image Proc
 
 $MESS['IBLOCK_DATA_ARRAY_NAME'] = 'Initial data array name';
 $MESS['IBLOCK_PROPERTY_ORDERS'] = 'Order';
+$MESS['IBLOCK_PROPERTY_HIDDEN'] = 'Hidden form fields';
 ?>

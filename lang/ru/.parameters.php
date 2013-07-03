@@ -46,4 +46,5 @@ $MESS["CP_BIEAF_RESIZE_IMAGES"] = "Использовать настройки �
 
 $MESS['IBLOCK_DATA_ARRAY_NAME'] = 'Имя массива с начальными данными';
 $MESS['IBLOCK_PROPERTY_ORDERS'] = 'Сортировка';
+$MESS['IBLOCK_PROPERTY_HIDDEN'] = 'Скрытые параметры формы';
 ?>

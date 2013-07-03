@@ -279,6 +279,7 @@ if (CModule::IncludeModule("iblock"))
 			else
 			{
 				echo ShowError(GetMessage("IBLOCK_ADD_ELEMENT_NOT_FOUND"));
+                $bHideAuth = true;
 				$bAllowAccess = false;
 			}
 		}

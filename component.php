@@ -38,6 +38,15 @@ if (CModule::IncludeModule("iblock"))
 		if(strlen(trim($value)) <= 0)
 			unset($arParams["PROPERTY_CODES_REQUIRED"][$key]);
 
+	if (strlen($arParams['DATA_ARRAY_NAME']) <= 0 || !preg_match('/^[A-Za-z_][A-Za-z01-9_]*$/', $arParams['DATA_ARRAY_NAME'])) {
+		$arInitialData = array();
+	} else {
+		global $$arParams['DATA_ARRAY_NAME'];
+		$arInitialData = ${$arParams['DATA_ARRAY_NAME']};
+		if (!is_array($arInitialData))
+			$arInitialData = array();
+	}
+
 	$arParams["USER_MESSAGE_ADD"] = trim($arParams["USER_MESSAGE_ADD"]);
 	if(strlen($arParams["USER_MESSAGE_ADD"]) <= 0)
 		$arParams["USER_MESSAGE_ADD"] = GetMessage("IBLOCK_USER_MESSAGE_ADD_DEFAULT");
@@ -287,17 +296,19 @@ if (CModule::IncludeModule("iblock"))
 
 	if ($bAllowAccess)
 	{
-		// process POST data
+		$arProperties = $arInitialData;
 		if (check_bitrix_sessid() && (!empty($_REQUEST["iblock_submit"]) || !empty($_REQUEST["iblock_apply"])))
 		{
 			$SEF_URL = $_REQUEST["SEF_APPLICATION_CUR_PAGE_URL"];
 			$arResult["SEF_URL"] = $SEF_URL;
 
 			$arProperties = $_REQUEST["PROPERTY"];
+		}
 
-			$arUpdateValues = array();
-			$arUpdatePropertyValues = array();
-
+		$arUpdateValues = array();
+		$arUpdatePropertyValues = array();
+		// process POST data
+		if (is_array($arProperties) && count($arProperties) > 0) {
 			// process properties list
 			foreach ($arParams["PROPERTY_CODES"]  as $i => $propertyID)
 			{
@@ -423,7 +434,8 @@ if (CModule::IncludeModule("iblock"))
 					}
 				}
 			}
-
+		}
+		if (!empty($_REQUEST["iblock_submit"]) || !empty($_REQUEST["iblock_apply"])) {
 			// check required properties
 			foreach ($arParams["PROPERTY_CODES_REQUIRED"] as $key => $propertyID)
 			{
@@ -947,7 +959,7 @@ if (CModule::IncludeModule("iblock"))
 		if ($bShowForm)
 		{
 			// prepare form data if some errors occured
-			if (count($arResult["ERRORS"]) > 0)
+			if (count($arResult["ERRORS"]) > 0 || (is_array($arProperties) && (count($arProperties) > 0)))
 			{
 				//echo "<pre>",htmlspecialcharsbx(print_r($arUpdateValues, true)),"</pre>";
 				foreach ($arUpdateValues as $key => $value)

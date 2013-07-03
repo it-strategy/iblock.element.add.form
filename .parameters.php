@@ -270,4 +270,11 @@ foreach ($arVirtualProperties as $key => $title)
 	);
 }
 
+$arComponentParameters['DATA_ARRAY_NAME'] = array(
+    'PARENT' => 'FIELDS',
+    'NAME' => GetMessage('IBLOCK_DATA_ARRAY_NAME'),
+    'TYPE' => 'STRING',
+    'DEFAULT' => 'arInitialData',
+);
+
 ?>

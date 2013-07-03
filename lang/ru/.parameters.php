@@ -43,4 +43,6 @@ $MESS["IBLOCK_DEFAULT_INPUT_SIZE"] = "Размер полей ввода";
 $MESS["CP_BIEAF_PREVIEW_TEXT_USE_HTML_EDITOR"] = "Использовать визуальный редактор для редактирования текста анонса";
 $MESS["CP_BIEAF_DETAIL_TEXT_USE_HTML_EDITOR"] = "Использовать визуальный редактор для редактирования подробного текста";
 $MESS["CP_BIEAF_RESIZE_IMAGES"] = "Использовать настройки инфоблока для обработки изображений";
+
+$MESS['IBLOCK_DATA_ARRAY_NAME'] = 'Имя массива с начальными данными';
 ?>

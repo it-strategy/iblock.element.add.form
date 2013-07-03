@@ -43,4 +43,6 @@ $MESS["IBLOCK_DEFAULT_INPUT_SIZE"] = "Input field size";
 $MESS["CP_BIEAF_PREVIEW_TEXT_USE_HTML_EDITOR"] = "Edit Preview Text in Lite Visual Editor";
 $MESS["CP_BIEAF_DETAIL_TEXT_USE_HTML_EDITOR"] = "Edit Detail Text in Lite Visual Editor";
 $MESS["CP_BIEAF_RESIZE_IMAGES"] = "Use Information Block Settings For Image Processing";
+
+$MESS['IBLOCK_DATA_ARRAY_NAME'] = 'Initial data array name';
 ?>

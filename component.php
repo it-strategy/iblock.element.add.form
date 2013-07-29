@@ -216,6 +216,19 @@ if (CModule::IncludeModule("iblock"))
 			$arResult["PROPERTY_LIST_FULL"][$arProperty["ID"]] = $arProperty;
 		}
 
+		$orderList = array();
+		foreach ($arResult["PROPERTY_LIST"] as $propertyID) {
+			$defaultOrder = 500;
+			if (isset($arParams['CUSTOM_ORDER_'.$propertyID])) {
+				$orderList[$propertyID] = intval($arParams['CUSTOM_ORDER_'.$propertyID]);
+			} else {
+				$orderList[$propertyID] = $defaultOrder++;
+			}
+		}
+		asort(&$orderList);
+		$arResult["PROPERTY_LIST"] = array_keys($orderList);
+		unset($orderList);
+
 		// set starting filter value
 		$arFilter = array("IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"], "IBLOCK_ID" => $arParams["IBLOCK_ID"], "SHOW_NEW" => "Y");
 

@@ -119,6 +119,7 @@ $arComponentParameters = array(
 			"NAME" => GetMessage("IBLOCK_PROPERTY"),
 			"TYPE" => "LIST",
 			"MULTIPLE" => "Y",
+			"REFRESH" => "Y",
 			"VALUES" => $arProperty_LNSF,
 		),
 
@@ -276,5 +277,19 @@ $arComponentParameters['DATA_ARRAY_NAME'] = array(
     'TYPE' => 'STRING',
     'DEFAULT' => 'arInitialData',
 );
+
+$arComponentParameters['GROUPS']['ORDERS'] = array(
+    'NAME' => GetMessage('IBLOCK_PROPERTY_ORDERS'),
+    'SORT' => '2000',
+);
+
+foreach ($arCurrentValues['PROPERTY_CODES'] as $property) {
+    $arComponentParameters['PARAMETERS']['CUSTOM_ORDER_'.$property] = array(
+        'PARENT' => 'ORDERS',
+        'NAME' => $arProperty_LNSF[$property],
+        'TYPE' => 'INTEGER',
+        'DEFAULT' => '500',
+    );
+}
 
 ?>

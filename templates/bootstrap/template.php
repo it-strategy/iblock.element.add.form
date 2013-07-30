@@ -176,7 +176,7 @@
                                         <input type="hidden" name="PROPERTY[<?=$propertyID?>][<?=$i?>]" value="<?=$value?>" /><?
                                     } else {
                                 ?>
-                        <input type="text" name="PROPERTY[<?=$propertyID?>][<?=$i?>]" value="<?=$value?>" />
+                        <textarea cols="<?=$arResult['PROPERTY_LIST_FULL'][$propertyID]['COL_COUNT']?>" rows="<?=$arResult['PROPERTY_LIST_FULL'][$propertyID]['ROW_COUNT']?>" name="PROPERTY[<?=$propertyID?>][<?=$i?>]"><?=$value?></textarea>
                                 <?
                                     }
                                 }

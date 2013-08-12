@@ -32,7 +32,19 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 		<tbody>
 			<?foreach ($arResult["PROPERTY_LIST"] as $propertyID):?>
 				<tr>
-					<td><?if (intval($propertyID) > 0):?><?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]?><?else:?><?=!empty($arParams["CUSTOM_TITLE_".$propertyID]) ? $arParams["CUSTOM_TITLE_".$propertyID] : GetMessage("IBLOCK_FIELD_".$propertyID)?><?endif?><?if(in_array($propertyID, $arResult["PROPERTY_REQUIRED"])):?><span class="starrequired">*</span><?endif?></td>
+					<td><?
+                        if (!empty($arParams["CUSTOM_TITLE_".$propertyID])) {
+                            ?><?=$arParams["CUSTOM_TITLE_".$propertyID];?><?
+                        } else {
+                            if (intval($propertyID) > 0) {
+                                ?><?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]?><?
+                            } else {
+                                ?><?=GetMessage("IBLOCK_FIELD_".$propertyID)?><?
+                            }
+                        }
+                        if (in_array($propertyID, $arResult["PROPERTY_REQUIRED"])) {
+                            ?><span class="starrequired">*</span><?
+                        }?></td>
 					<td>
 						<?
 						//echo "<pre>"; print_r($arResult["PROPERTY_LIST_FULL"]); echo "</pre>";

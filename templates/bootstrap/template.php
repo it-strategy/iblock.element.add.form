@@ -46,7 +46,19 @@
                     if (isset($arResult['ERRORS'][$propertyID])) {
                         ?> error<?
                     }?>">
-                    <label class="control-label"><?if (intval($propertyID) > 0):?><?=$arResult['PROPERTY_LIST_FULL'][$propertyID]['NAME']?><?else:?><?=!empty($arParams['CUSTOM_TITLE_'.$propertyID]) ? $arParams['CUSTOM_TITLE_'.$propertyID] : GetMessage('IBLOCK_FIELD_'.$propertyID)?><?endif?><?if(in_array($propertyID, $arResult['PROPERTY_REQUIRED'])):?><span class="starrequired">*</span><?endif?></label>
+                    <label class="control-label"><?
+                        if (!empty($arParams["CUSTOM_TITLE_".$propertyID])) {
+                            ?><?=$arParams["CUSTOM_TITLE_".$propertyID];?><?
+                        } else {
+                            if (intval($propertyID) > 0) {
+                                ?><?=$arResult["PROPERTY_LIST_FULL"][$propertyID]["NAME"]?><?
+                            } else {
+                                ?><?=GetMessage("IBLOCK_FIELD_".$propertyID)?><?
+                            }
+                        }
+                        if (in_array($propertyID, $arResult["PROPERTY_REQUIRED"])) {
+                            ?><span class="starrequired">*</span><?
+                        }?></label>
                     <div class="controls"><?
                 }
                         if (intval($propertyID) > 0) {

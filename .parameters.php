@@ -290,6 +290,13 @@ foreach ($arCurrentValues['PROPERTY_CODES'] as $property) {
         'TYPE' => 'INTEGER',
         'DEFAULT' => '500',
     );
+    if (!array_key_exists('CUSTOM_TITLE_'.$property, $arComponentParameters['PARAMETERS'])) {
+        $arComponentParameters["PARAMETERS"]["CUSTOM_TITLE_".$property] = array(
+            "PARENT" => "TITLES",
+            "NAME" => $arProperty_LNSF[$property],
+            "TYPE" => "STRING",
+        );
+    }
 }
 
 ?>

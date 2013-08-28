@@ -50,6 +50,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
                         }?></td>
 					<td>
 						<?
+                }
 						//echo "<pre>"; print_r($arResult["PROPERTY_LIST_FULL"]); echo "</pre>";
 						if (intval($propertyID) > 0)
 						{
@@ -331,7 +332,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
 								endswitch;
 							break;
-						endswitch;?>
+						endswitch;
+                        if (!$isHidden) {?>
 					</td>
 				</tr><?
                 }?>

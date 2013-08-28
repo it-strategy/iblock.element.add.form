@@ -333,7 +333,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 							break;
 						endswitch;?>
 					</td>
-				</tr>
+				</tr><?
+                }?>
 			<?endforeach;?>
 			<?if($arParams["USE_CAPTCHA"] == "Y" && $arParams["ID"] <= 0):?>
 				<tr>
